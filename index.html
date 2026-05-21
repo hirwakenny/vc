@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Simple School Website</title>
+
+    <!-- Internal CSS -->
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            margin:0;
+            padding:0;
+            background:#f4f4f4;
+        }
+
+        header{
+            background:#004080;
+            color:white;
+            padding:20px;
+            text-align:center;
+        }
+
+        nav{
+            background:#333;
+            padding:10px;
+            text-align:center;
+        }
+
+        nav a{
+            color:white;
+            text-decoration:none;
+            margin:15px;
+            font-size:18px;
+        }
+
+        .container{
+            width:80%;
+            margin:auto;
+            margin-top:20px;
+        }
+
+        .card{
+            background:white;
+            padding:20px;
+            border-radius:8px;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+            margin-bottom:20px;
+        }
+
+        h2{
+            color:#004080;
+        }
+
+        input{
+            width:100%;
+            padding:10px;
+            margin-top:10px;
+            margin-bottom:15px;
+            border:1px solid #ccc;
+            border-radius:5px;
+        }
+
+        button{
+            background:#004080;
+            color:white;
+            padding:10px 20px;
+            border:none;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#0066cc;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            margin-top:20px;
+        }
+
+        table, th, td{
+            border:1px solid #ccc;
+        }
+
+        th{
+            background:#004080;
+            color:white;
+            padding:10px;
+        }
+
+        td{
+            padding:10px;
+            text-align:center;
+        }
+
+        footer{
+            background:#222;
+            color:white;
+            text-align:center;
+            padding:15px;
+            margin-top:30px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>My School Website</h1>
+        <p>Welcome to Our School</p>
+    </header>
+
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Students</a>
+        <a href="#">Teachers</a>
+        <a href="#">Contact</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- About School -->
+        <div class="card">
+            <h2>About School</h2>
+            <p>
+                This is a simple school management website where teachers
+                can add students easily.
+            </p>
+        </div>
+
+        <!-- Add Student Form -->
+        <div class="card">
+            <h2>Teacher Panel - Add Student</h2>
+
+            <input type="text" id="studentName" placeholder="Enter Student Name">
+
+            <input type="number" id="studentAge" placeholder="Enter Student Age">
+
+            <input type="text" id="studentClass" placeholder="Enter Class">
+
+            <button onclick="addStudent()">Add Student</button>
+
+            <!-- Student Table -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Class</th>
+                    </tr>
+                </thead>
+
+                <tbody id="studentTable">
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>© 2026 My School Website</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        function addStudent(){
+
+            let name = document.getElementById("studentName").value;
+            let age = document.getElementById("studentAge").value;
+            let studentClass = document.getElementById("studentClass").value;
+
+            if(name === "" || age === "" || studentClass === ""){
+                alert("Please fill all fields");
+                return;
+            }
+
+            let table = document.getElementById("studentTable");
+
+            let row = table.insertRow();
+
+            let cell1 = row.insertCell(0);
+            let cell2 = row.insertCell(1);
+            let cell3 = row.insertCell(2);
+
+            cell1.innerHTML = name;
+            cell2.innerHTML = age;
+            cell3.innerHTML = studentClass;
+
+            // Clear Inputs
+            document.getElementById("studentName").value = "";
+            document.getElementById("studentAge").value = "";
+            document.getElementById("studentClass").value = "";
+        }
+    </script>
+
+</body>
+</html>
