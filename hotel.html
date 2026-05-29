@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hotel Booking System</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body{
+      background: linear-gradient(135deg,#0f172a,#1e293b);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+    }
+
+    .container{
+      width:100%;
+      max-width:900px;
+      background:white;
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:0 10px 30px rgba(0,0,0,0.3);
+      display:grid;
+      grid-template-columns:1fr 1fr;
+    }
+
+    .left{
+      background:url('https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200&auto=format&fit=crop') center/cover;
+      position:relative;
+      min-height:500px;
+    }
+
+    .overlay{
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0.55);
+      color:white;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      padding:40px;
+    }
+
+    .overlay h1{
+      font-size:40px;
+      margin-bottom:15px;
+    }
+
+    .overlay p{
+      line-height:1.6;
+      font-size:17px;
+    }
+
+    .right{
+      padding:35px;
+    }
+
+    .title{
+      text-align:center;
+      margin-bottom:25px;
+    }
+
+    .title h2{
+      color:#0f172a;
+      margin-bottom:8px;
+    }
+
+    .form-group{
+      margin-bottom:18px;
+    }
+
+    label{
+      display:block;
+      margin-bottom:8px;
+      font-weight:bold;
+      color:#334155;
+    }
+
+    input, select{
+      width:100%;
+      padding:12px;
+      border:1px solid #cbd5e1;
+      border-radius:10px;
+      outline:none;
+      font-size:15px;
+      transition:0.3s;
+    }
+
+    input:focus,
+    select:focus{
+      border-color:#2563eb;
+      box-shadow:0 0 5px rgba(37,99,235,0.3);
+    }
+
+    .btn{
+      width:100%;
+      padding:14px;
+      border:none;
+      border-radius:10px;
+      background:#2563eb;
+      color:white;
+      font-size:17px;
+      cursor:pointer;
+      transition:0.3s;
+      margin-top:10px;
+    }
+
+    .btn:hover{
+      background:#1d4ed8;
+    }
+
+    .result{
+      margin-top:25px;
+      background:#f1f5f9;
+      padding:20px;
+      border-radius:12px;
+      display:none;
+    }
+
+    .result h3{
+      color:#0f172a;
+      margin-bottom:15px;
+    }
+
+    .summary{
+      display:flex;
+      justify-content:space-between;
+      margin:10px 0;
+      border-bottom:1px solid #cbd5e1;
+      padding-bottom:8px;
+    }
+
+    .total{
+      font-size:22px;
+      font-weight:bold;
+      color:#16a34a;
+      margin-top:15px;
+      text-align:center;
+    }
+
+    .error{
+      color:red;
+      font-size:14px;
+      margin-top:5px;
+    }
+
+    @media(max-width:768px){
+      .container{
+        grid-template-columns:1fr;
+      }
+
+      .left{
+        min-height:250px;
+      }
+
+      .overlay h1{
+        font-size:30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- LEFT SIDE -->
+    <div class="left">
+      <div class="overlay">
+        <h1>Kigali Hotel</h1>
+        <p>
+          Modern Hotel Booking System that calculates room charges automatically 
+          based on room type and number of days stayed.
+        </p>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="right">
+
+      <div class="title">
+        <h2>Room Booking Form</h2>
+        <p>Fill all booking details</p>
+      </div>
+
+      <form id="bookingForm">
+
+        <div class="form-group">
+          <label>Customer Name</label>
+          <input type="text" id="customerName" placeholder="Enter customer name">
+          <div class="error" id="nameError"></div>
+        </div>
+
+        <div class="form-group">
+          <label>Room Type</label>
+          <select id="roomType">
+            <option value="">Select Room Type</option>
+            <option value="50">Single Room - $50/day</option>
+            <option value="90">Double Room - $90/day</option>
+            <option value="150">Deluxe Room - $150/day</option>
+            <option value="250">Suite Room - $250/day</option>
+          </select>
+          <div class="error" id="roomError"></div>
+        </div>
+
+        <div class="form-group">
+          <label>Number of Days</label>
+          <input type="number" id="days" placeholder="Enter number of days">
+          <div class="error" id="daysError"></div>
+        </div>
+
+        <div class="form-group">
+          <label>Number of Guests</label>
+          <input type="number" id="guests" placeholder="Enter number of guests">
+          <div class="error" id="guestError"></div>
+        </div>
+
+        <button type="submit" class="btn">
+          Calculate Booking Cost
+        </button>
+
+      </form>
+
+      <!-- RESULT -->
+      <div class="result" id="result">
+
+        <h3>Booking Summary</h3>
+
+        <div class="summary">
+          <span>Customer:</span>
+          <span id="displayName"></span>
+        </div>
+
+        <div class="summary">
+          <span>Room Price Per Day:</span>
+          <span id="displayRoom"></span>
+        </div>
+
+        <div class="summary">
+          <span>Days Stayed:</span>
+          <span id="displayDays"></span>
+        </div>
+
+        <div class="summary">
+          <span>Guests:</span>
+          <span id="displayGuests"></span>
+        </div>
+
+        <div class="summary">
+          <span>Service Charge:</span>
+          <span>$20</span>
+        </div>
+
+        <div class="total">
+          Total Cost: <span id="totalCost"></span>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("bookingForm");
+
+    form.addEventListener("submit", function(e){
+
+      e.preventDefault();
+
+      // INPUTS
+      const customerName = document.getElementById("customerName").value.trim();
+      const roomType = document.getElementById("roomType").value;
+      const days = document.getElementById("days").value;
+      const guests = document.getElementById("guests").value;
+
+      // ERROR FIELDS
+      const nameError = document.getElementById("nameError");
+      const roomError = document.getElementById("roomError");
+      const daysError = document.getElementById("daysError");
+      const guestError = document.getElementById("guestError");
+
+      // CLEAR ERRORS
+      nameError.textContent = "";
+      roomError.textContent = "";
+      daysError.textContent = "";
+      guestError.textContent = "";
+
+      let isValid = true;
+
+      // VALIDATION
+      if(customerName === ""){
+        nameError.textContent = "Customer name is required";
+        isValid = false;
+      }
+
+      if(roomType === ""){
+        roomError.textContent = "Please select room type";
+        isValid = false;
+      }
+
+      if(days === "" || days <= 0){
+        daysError.textContent = "Enter valid number of days";
+        isValid = false;
+      }
+
+      if(guests === "" || guests <= 0){
+        guestError.textContent = "Enter valid number of guests";
+        isValid = false;
+      }
+
+      if(!isValid){
+        return;
+      }
+
+      // CALCULATION
+      const roomPrice = parseFloat(roomType);
+      const serviceCharge = 20;
+
+      const total = (roomPrice * days) + serviceCharge;
+
+      // DISPLAY RESULTS
+      document.getElementById("displayName").textContent = customerName;
+      document.getElementById("displayRoom").textContent = "$" + roomPrice;
+      document.getElementById("displayDays").textContent = days;
+      document.getElementById("displayGuests").textContent = guests;
+      document.getElementById("totalCost").textContent = "$" + total;
+
+      document.getElementById("result").style.display = "block";
+
+    });
+  </script>
+
+</body>
+</html>
